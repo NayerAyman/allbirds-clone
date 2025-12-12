@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+
+@font-face {
+  font-family: "PlaywriteCZ";
+  src: url("./assets/fonts/DancingScript-VariableFont_wght.ttf") format("truetype");
+}
+
+.logo-font {
+  font-family: "PlaywriteCZ";
+}
+
+@font-face {
+  font-family: "salem";
+  src: url("./assets/fonts/InstrumentSerif-Regular.ttf") format("truetype");
+}
+
+.sale-font {
+  font-family: "salem";
+}
+
+
+.big-card {
+  background-size: 100%; /* numeric value so it can animate */
+  background-position: center;
+  transition: background-size 0.6s ease-in-out;
+}
+
+@media (min-width: 1024px) {
+  .big-card:hover {
+    background-size: 110%;
+  }
+}
