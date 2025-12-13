@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <div className="bg-rose-950 w-full h-[45dvh] flex flex-col items-center justify-center">
+    <div className="bg-rose-950 w-full h-[50dvh] flex flex-col items-center justify-center">
       <div className="text-white flex flex-col items-center justify-center w-full h-full mt-10 gap-3">
         <h1 className="font-semibold text-5xl sale-font">30% Off Sitewide</h1>
         <p className="text-3xl text-center lg:text-3xl font-light">Plus 50% off faves</p>

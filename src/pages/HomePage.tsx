@@ -4,7 +4,7 @@ import ProductSection from "../components/homeComponents/products/ProductSection
 
 export default function HomePage() {
   return (
-    <div className="w-full h-full bg-orange-50 flex flex-col items-center justify-start ">
+    <div className="w-full h-full bg-orange-50  flex flex-col items-center justify-start ">
       <Header />
       <Hero />
       <ProductSection />

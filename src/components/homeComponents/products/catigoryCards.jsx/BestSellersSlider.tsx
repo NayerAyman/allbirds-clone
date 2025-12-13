@@ -89,7 +89,7 @@ export default function BestSellersSlider() {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col items-start lg:items-center justify-center gap-2 ml-2 lg:ml-0 mt-20 font-semibold">
+    <div className="w-full h-full flex flex-col items-start lg:items-center justify-center gap-2 ml-2 lg:ml-0 mt-20 font-semibold overflow-hidden">
       <p className="underline tracking-widest">BESTSELLERS</p>
 
       {/* Swiper Carousel */}
