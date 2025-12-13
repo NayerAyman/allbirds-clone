@@ -1,5 +1,4 @@
 import {
-  FiHelpCircle,
   FiMenu,
   FiSearch,
   FiShoppingBag,
@@ -38,23 +37,18 @@ export default function Navbar() {
           allbirds
         </Link>
 
-        <ul className="flex gap-6 font-medium lg:ml-55 text-sm">
+        <ul className="flex gap-6 font-medium  text-sm">
           <li><Link to="/men">MEN</Link></li>
           <li><Link to="/women">WOMEN</Link></li>
           <li><Link to="/sale">SALE</Link></li>
         </ul>
 
         <div className="flex items-center gap-6">
-          <ul className="flex gap-4 text-sm font-normal">
-            <li><Link to="/stores">Our Stores</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/rerun">ReRun</Link></li>
-          </ul>
+
 
           <ul className="flex gap-4 text-lg font-semibold">
             <li><button><FiSearch /></button></li>
             <li><button><FiUser /></button></li>
-            <li><button><FiHelpCircle /></button></li>
             <li><button><FiShoppingBag /></button></li>
           </ul>
         </div>
@@ -75,7 +69,7 @@ export default function Navbar() {
 
           {/* Bottom */}
           <div className="flex justify-center bg-[#f4eed8] px-2 rounded-b-3xl">
-            {["MEN", "WOMEN", "NEW ARRIVALS", "BESTSELLERS"].map((item) => (
+            {["MEN", "WOMEN","SALE"].map((item) => (
               <Link
                 key={item}
                 to={`/${item.toLowerCase().replace(/ /g, "-")}`} // تحويل النص لpath

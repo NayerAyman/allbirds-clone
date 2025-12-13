@@ -6,14 +6,16 @@ import MenPage from "./pages/MenPage";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        {/* Pass category via URL param instead of prop */}
-        <Route path="/:category" element={<MenPage />} />
-      </Routes>
-      <Footer />
+<BrowserRouter>
+      {/* Added min-h-screen to ensure full screen coverage */}
+        <Navbar />
+      <div className="flex flex-col w-full h-auto bg-orange-50">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/:category" element={<MenPage />} />
+        </Routes>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }
