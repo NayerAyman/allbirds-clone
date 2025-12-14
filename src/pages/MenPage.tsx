@@ -1,39 +1,56 @@
 import { useParams } from "react-router-dom";
 import FilterBar from "../components/menPageComponent/FilterBar";
 import Products from "../components/menPageComponent/Products";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FilterModal from "../components/ui/FilterModal";
-import { menShoes , womenShoes, type Product } from "../../src/data"
+import { getAllProducts } from "../subapase/GetData";
 
+export type ProductColor = {
+  color_name: string;
+  hex: string;
+  price: number;
+  sale_price: number | null;
+  product_images: { image: string }[];
+};
 
+export type Product = {
+  id: string;
+  name: string;
+  sizes: number[];
+  gender: "men" | "women";
+  product_colors: ProductColor[];
+};
+
+export type Filters = {
+  saleOnly: boolean;
+  colors: string[];
+  sizes: number[];
+  minPrice: number | null;
+  maxPrice: number | null;
+};
 
 const applyFilters = (products: Product[], filters: Filters) => {
-  return products.filter(product => {
-    // SIZE
+  return products.filter((product) => {
     if (
       filters.sizes.length > 0 &&
-      !filters.sizes.some(size => product.sizes.includes(size))
-    ) {
+      !filters.sizes.some((size) => product.sizes.includes(size))
+    )
       return false;
-    }
 
-    // COLORS + PRICE + SALE
-    const hasValidColor = product.colors.some(color => {
-      // SALE
-      if (filters.saleOnly && color.salePrice === null) return false;
+    const hasValidColor = product.product_colors.some((color) => {
+      const finalPrice = color.sale_price ?? color.price;
 
-      const finalPrice = color.salePrice ?? color.price;
-
-      // PRICE
-      if (filters.maxPrice && finalPrice > filters.maxPrice) return false;
-
-      // COLOR
+      if (filters.saleOnly && color.sale_price === null) return false;
+      if (
+        (filters.maxPrice && finalPrice > filters.maxPrice) ||
+        (filters.minPrice && finalPrice < filters.minPrice)
+      )
+        return false;
       if (
         filters.colors.length > 0 &&
-        !filters.colors.includes(color.colorName.toLowerCase())
-      ) {
+        !filters.colors.includes(color.color_name.toLowerCase())
+      )
         return false;
-      }
 
       return true;
     });
@@ -42,82 +59,72 @@ const applyFilters = (products: Product[], filters: Filters) => {
   });
 };
 
-
-export type Filters = {
-  saleOnly: boolean;
-  colors: string[];
-  sizes: number[];
-  minPrice: number | null; // NEW
-  maxPrice: number | null; // EXISTING
-};
-
 const MenPage: React.FC = () => {
-const [filters, setFilters] = useState<Filters>({
-  saleOnly: false,
-  colors: [],
-  sizes: [],
-  minPrice: null,
-  maxPrice: null,
-});
-
-
+  const [productsData, setProductsData] = useState<Product[]>([]);
+  const [filters, setFilters] = useState<Filters>({
+    saleOnly: false,
+    colors: [],
+    sizes: [],
+    minPrice: null,
+    maxPrice: null,
+  });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const { category } = useParams<{ category: string }>();
-
-  type Category = "Men" | "Women" | "Sale";
-
+  type Category = "men" | "women" | "sale";
   const currentCategory: Category =
-    category === "women" ? "Women" : category === "sale" ? "Sale" : "Men";
+    category === "women" ? "women" : category === "sale" ? "sale" : "men";
 
+  // Fetch products once on mount
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await getAllProducts();
+      if (data) setProductsData(data);
+    };
+    fetchProducts();
+  }, []);
 
+  // Filter products by category
+  const baseProducts =
+    currentCategory === "men"
+      ? productsData.filter((p: Product) => p.gender === "men")
+      : currentCategory === "women"
+      ? productsData.filter((p: Product) => p.gender === "women")
+      : productsData.filter((p: Product) =>
+          p.product_colors.some((c) => c.sale_price !== null)
+        );
 
-
-
-const baseShoes =
-  currentCategory === "Men"
-    ? menShoes
-    : currentCategory === "Women"
-    ? womenShoes
-    : [...menShoes, ...womenShoes].filter(
-        (shoe) => shoe.colors.some((color) => color.salePrice !== null)
-      ); 
-
-
-
-    const filteredShoes = applyFilters(baseShoes, filters);
+  const filteredProducts = applyFilters(baseProducts, filters);
 
   return (
-    <div className="w-full min-h-screen flex bg-orange-50 flex-col items-start py-2 mt-15 justify-start">
-      {/* Breadcrumb */}
-      <div className="flex items-center gap-2 ml-7 mb-5 font-extralight text-xs">
-        <a href="/">HOME</a>
-        <span> / </span>
-        <p>{currentCategory}'s Shoes</p>
-      </div>
+    <div className="w-full  min-h-screen flex bg-orange-50 flex-col items-center justify-start py-5 mt-25">
+
 
       {/* Title & Description */}
-      <div className="flex flex-col gap-2 items-center justify-center w-full px-4 my-auto h-fit mt-5 md:mb-10">
+      <div className="flex flex-col gap-2 items-center justify-center w-full px-4 mt-5 h-fit  md:mb-10">
         <h1 className="text-3xl">{currentCategory}'s Shoes</h1>
         <p className="text-gray-600">
-          {currentCategory === "Men"
+          {currentCategory === "men"
             ? "Lightweight, supportive, and wildly comfortable, our premium men's shoes make any outing feel effortless."
             : "Lightweight, supportive, and wildly comfortable, our premium women's shoes make any outing feel effortless."}
         </p>
       </div>
 
       {/* FilterBar & Products */}
-      <div className="flex flex-col gap-2 items-center justify-start w-full h-full ">
-        {/* FilterBar now reads category from URL internally */}
-        <FilterBar onFilterClick={() => setIsFilterOpen(true)} length={filteredShoes.length} />
+      <div className="flex flex-col gap-2 items-center justify-start w-full h-full">
+        <FilterBar
+          onFilterClick={() => setIsFilterOpen(true)}
+          length={filteredProducts.length}
+        />
         {isFilterOpen && (
           <FilterModal
             filters={filters}
             setFilters={setFilters}
             onClose={() => setIsFilterOpen(false)}
+            products={baseProducts} // <-- Add this
           />
         )}
-        <Products products={filteredShoes} />
+        <Products products={filteredProducts} />
       </div>
     </div>
   );

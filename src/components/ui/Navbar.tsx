@@ -1,9 +1,4 @@
-import {
-  FiMenu,
-  FiSearch,
-  FiShoppingBag,
-  FiUser,
-} from "react-icons/fi";
+import { FiShoppingBag, FiUser } from "react-icons/fi";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom"; // <-- مهم
 
@@ -38,18 +33,29 @@ export default function Navbar() {
         </Link>
 
         <ul className="flex gap-6 font-medium  text-sm">
-          <li><Link to="/men">MEN</Link></li>
-          <li><Link to="/women">WOMEN</Link></li>
-          <li><Link to="/sale">SALE</Link></li>
+          <li>
+            <Link to="/men">MEN</Link>
+          </li>
+          <li>
+            <Link to="/women">WOMEN</Link>
+          </li>
+          <li>
+            <Link to="/sale">SALE</Link>
+          </li>
         </ul>
 
         <div className="flex items-center gap-6">
-
-
           <ul className="flex gap-4 text-lg font-semibold">
-            <li><button><FiSearch /></button></li>
-            <li><button><FiUser /></button></li>
-            <li><button><FiShoppingBag /></button></li>
+            <li>
+              <Link to="/login">
+              <FiUser />
+            </Link>
+            </li>
+            <li>
+              <button>
+                <FiShoppingBag />
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -58,18 +64,23 @@ export default function Navbar() {
       <div className="flex flex-col lg:hidden w-full items-center px-4">
         <div className="w-full bg-stone-100 bg-opacity-90 backdrop-blur-md rounded-3xl shadow-lg overflow-hidden">
           {/* Top */}
-          <div className="flex items-center justify-between px-4 py-2">
-            <button className="text-2xl"><FiMenu /></button>
-            <Link to="/" className="text-3xl ml-9 font-bold logo-font">allbirds</Link>
+          <div className="flex items-center text-2xl justify-between px-4 py-2">
+            <Link to="/login">
+              <FiUser />
+            </Link>
+            <Link to="/" className="text-3xl  font-bold logo-font">
+              allbirds
+            </Link>
             <div className="flex gap-3 text-2xl">
-              <button><FiSearch /></button>
-              <button><FiShoppingBag /></button>
+              <button>
+                <FiShoppingBag />
+              </button>
             </div>
           </div>
 
           {/* Bottom */}
           <div className="flex justify-center bg-[#f4eed8] px-2 rounded-b-3xl">
-            {["MEN", "WOMEN","SALE"].map((item) => (
+            {["MEN", "WOMEN", "SALE"].map((item) => (
               <Link
                 key={item}
                 to={`/${item.toLowerCase().replace(/ /g, "-")}`} // تحويل النص لpath

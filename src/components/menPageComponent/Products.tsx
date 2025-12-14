@@ -7,20 +7,21 @@ import { IoBagAddOutline } from "react-icons/io5";
 // =====================
 // TYPES
 // =====================
-interface Color {
-  colorName: string;
-  hex: string;
-  price: number;
-  salePrice: number | null;
-  images: string;
-}
-
 interface Product {
   id: string;
   name: string;
   sizes: number[];
-  colors: Color[];
+  product_colors: ProductColor[];
 }
+
+interface ProductColor {
+  color_name: string;
+  hex: string;
+  price: number;
+  sale_price: number | null;
+  product_images: { image: string }[];
+}
+
 
 interface ProductsProps {
   products: Product[];
@@ -46,13 +47,13 @@ export default function Products({ products }: ProductsProps) {
 // =====================
 function ShoeCard({ product }: { product: Product }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeColor = product.colors[activeIndex];
+  const activeColor = product.product_colors[activeIndex];
 
   return (
     <div className="bg-white rounded-2xl flex-col items-center justify-center shadow-md hover:scale-105 transition-transform duration-300 p-3">
       {/* IMAGE */}
       <img
-        src={activeColor.images || "/placeholder.webp"}
+        src={activeColor.product_images[0].image || "/placeholder.webp"}
         className="w-full h-40 md:h-50 object-contain mb-2 hover:scale-150 transition-transform duration-500"
         alt={product.name}
       />
@@ -62,13 +63,13 @@ function ShoeCard({ product }: { product: Product }) {
 
       {/* COLOR NAME */}
       <p className="text-gray-600 text-xs md:text-sm">
-        {activeColor.colorName || "Select"}
+        {activeColor.color_name || "Select"}
       </p>
 
       <div className="flex md:flex-row flex-col-reverse items-center justify-between">
         {/* COLOR CIRCLES */}
         <div className="flex items-center gap-2 mt-3">
-          {product.colors.map((c, i) => (
+          {product.product_colors.map((c, i) => (
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
@@ -82,9 +83,9 @@ function ShoeCard({ product }: { product: Product }) {
 
         {/* PRICE */}
         <p className="font-semibold text-red-600 text-sm mt-1">
-          {activeColor.salePrice ? (
+          {activeColor.sale_price ? (
             <>
-              <span className="text-red-600 mr-2">${activeColor.salePrice}</span> 
+              <span className="text-red-600 mr-2">${activeColor.sale_price}</span> 
               <span className="line-through text-gray-500 ">
                 ${activeColor.price}
               </span>
