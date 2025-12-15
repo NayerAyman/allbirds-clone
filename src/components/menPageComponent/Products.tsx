@@ -5,6 +5,7 @@ import SizesModal from "./SizesModal";
 import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { useQueryClient } from "@tanstack/react-query";
+import { supabase } from "../../subapase/SubapaseAPI";
 
 // TYPES
 interface Product {
@@ -53,6 +54,25 @@ function ShoeCard({ product }: { product: Product }) {
 
   const activeColor = product.product_colors[activeColorIndex];
 const addProductToCart = async (): Promise<boolean> => {
+
+    // 1️⃣ تحقق من تسجيل الدخول
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+    if (!user) {
+    Swal.fire({
+      toast: true,
+      icon: "warning",
+      title: "You must be logged in to add items to the cart!",
+      position: "top-end",
+      timer: 2500,
+      showConfirmButton: false,
+    });
+    return false;
+  }
+  
+
   if (!selectedSize) {
     Swal.fire({
       toast: true,
