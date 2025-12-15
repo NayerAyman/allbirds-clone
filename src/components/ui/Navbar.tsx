@@ -71,7 +71,7 @@ export default function Navbar() {
           allbirds
         </Link>
 
-        <ul className="flex gap-6 font-medium  text-sm">
+        <ul className={`flex gap-6 ${!isAuthenticated&& "mr-10"} font-medium  text-sm`}>
           <li><Link to="/men">MEN</Link></li>
           <li><Link to="/women">WOMEN</Link></li>
           <li><Link to="/sale">SALE</Link></li>
@@ -112,7 +112,7 @@ export default function Navbar() {
           {/* Top */}
           <div className="flex items-center text-2xl justify-between px-4 py-2">
             <Link to="/login">{isAuthenticated ? <FaHistory /> : <FiUser />}</Link>
-            <Link to="/" className="text-3xl ml-10 font-bold logo-font">allbirds</Link>
+            <Link to="/" className={`text-3xl ${isAuthenticated&& "ml-10"} font-bold logo-font`}>allbirds</Link>
             <div className="flex items-center justify-center gap-3 text-2xl">
               <Link to="/cart" className="relative">
                 <FiShoppingBag className={`${cartItemsCount > 0 ? "text-green-500" : "text-black"}`} />
