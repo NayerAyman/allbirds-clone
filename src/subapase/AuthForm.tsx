@@ -17,22 +17,38 @@ const AuthForm = () => {
 
     // Validation
     if (!email || !password) {
-      Swal.fire({ icon: "error", title: "Oops...", text: "Email and password are required" });
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Email and password are required",
+      });
       return;
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      Swal.fire({ icon: "error", title: "Invalid Email", text: "Please enter a valid email" });
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Email",
+        text: "Please enter a valid email",
+      });
       return;
     }
 
     if (!isLogin && password !== confirmPassword) {
-      Swal.fire({ icon: "error", title: "Password mismatch", text: "Passwords do not match" });
+      Swal.fire({
+        icon: "error",
+        title: "Password mismatch",
+        text: "Passwords do not match",
+      });
       return;
     }
 
     if (password.length < 6) {
-      Swal.fire({ icon: "error", title: "Weak password", text: "Password must be at least 6 characters" });
+      Swal.fire({
+        icon: "error",
+        title: "Weak password",
+        text: "Password must be at least 6 characters",
+      });
       return;
     }
 
@@ -44,7 +60,6 @@ const AuthForm = () => {
         const { error } = await loginUser(email, password);
         if (error) throw error;
 
-        Swal.fire({ icon: "success", title: "Logged in successfully!", timer: 1500, showConfirmButton: false });
         navigate("/");
       } else {
         // Sign Up
@@ -65,7 +80,11 @@ const AuthForm = () => {
       if (err instanceof Error) {
         Swal.fire({ icon: "error", title: "Oops...", text: err.message });
       } else {
-        Swal.fire({ icon: "error", title: "Oops...", text: "Something went wrong" });
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong",
+        });
       }
     } finally {
       setLoading(false);
@@ -74,14 +93,20 @@ const AuthForm = () => {
 
   return (
     <div className="flex items-center flex-col justify-center min-h-screen bg-linear-to-b from-red-800 to-orange-200 p-4">
-      <Link to="/" className="font-semibold m-3 p-3">Back</Link>
+      <Link to="/" className="font-semibold m-3 p-3">
+        Back
+      </Link>
       <form
         onSubmit={handleSubmit}
         className="bg-white p-8 rounded-xl shadow-xl w-full max-w-md text-center"
       >
-        <h1 className="text-6xl font-bold logo-font mb-4 text-gray-900">allbirds</h1>
+        <h1 className="text-6xl font-bold logo-font mb-4 text-gray-900">
+          allbirds
+        </h1>
 
-        <h2 className="text-2xl font-semibold mb-6 text-gray-700">{isLogin ? "Login" : "Sign Up"}</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-gray-700">
+          {isLogin ? "Login" : "Sign Up"}
+        </h2>
 
         <input
           type="email"
@@ -112,7 +137,9 @@ const AuthForm = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 rounded-md text-white ${loading ? "bg-gray-400" : "bg-black hover:bg-gray-800"}`}
+          className={`w-full py-3 rounded-md text-white ${
+            loading ? "bg-gray-400" : "bg-black hover:bg-gray-800"
+          }`}
         >
           {loading ? "Please wait..." : isLogin ? "Login" : "Sign Up"}
         </button>
@@ -121,14 +148,20 @@ const AuthForm = () => {
           {isLogin ? (
             <>
               Don’t have an account?{" "}
-              <span className="font-semibold cursor-pointer text-blue-600" onClick={() => setIsLogin(false)}>
+              <span
+                className="font-semibold cursor-pointer text-blue-600"
+                onClick={() => setIsLogin(false)}
+              >
                 Sign Up
               </span>
             </>
           ) : (
             <>
               Already have an account?{" "}
-              <span className="font-semibold cursor-pointer text-blue-600" onClick={() => setIsLogin(true)}>
+              <span
+                className="font-semibold cursor-pointer text-blue-600"
+                onClick={() => setIsLogin(true)}
+              >
                 Login
               </span>
             </>

@@ -30,6 +30,5 @@ export async function getAllProducts(gender?: 'men' | 'women') {
     return [];
   }
 
-  console.log('Products with colors and images:', data);
   return data;
 }
