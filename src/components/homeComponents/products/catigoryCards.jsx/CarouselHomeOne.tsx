@@ -42,7 +42,7 @@ export default function CarouselHomeOne() {
   };
 
   return (
-    <div className="w-full max-w-[1400px] mx-auto py-5 overflow-hidden">
+    <div className="w-full max-w-[1400px] mx-auto py-5 ">
       {/* Desktop */}
       <div className="hidden lg:flex justify-center gap-4">
         {items.map((item) => (
